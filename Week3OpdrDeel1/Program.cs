@@ -6,11 +6,35 @@ namespace Week3OpdrDeel1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var FirstQuesiton = new Question() { Text = "Who is the inventor of C#?", Answer = "Microsoft" };
+            PresentQuestion(FirstQuesiton);
+        }
+
+        public static void PresentQuestion(Question q)
+        {
+            Console.WriteLine(q.Text);
+            Console.WriteLine("Your answer: ");
+            string Answer = Console.ReadLine();
+            Console.WriteLine("That is " + CheckAnswer(q, Answer));
+            Console.ReadKey();
+
+
+        }
+
+        public static Boolean CheckAnswer(Question q, string GivenAnswer)
+        {
+            string CorrectAnswer = q.Answer;
+            if(GivenAnswer == CorrectAnswer)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
     }
 
-    class Question
+    public class Question
     {
         public string Text { get; set; }
         public string Answer { get; set; }
