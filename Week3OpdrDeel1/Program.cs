@@ -9,4 +9,13 @@ namespace Week3OpdrDeel1
             Console.WriteLine("Hello World!");
         }
     }
+
+    class Question
+    {
+        public string Text { get; set; }
+        public string Answer { get; set; }
+
+
+
+    }
 }
