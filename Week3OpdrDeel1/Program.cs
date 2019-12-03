@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Week3OpdrDeel1
 {
@@ -7,13 +8,21 @@ namespace Week3OpdrDeel1
     {
         static void Main(string[] args)
         {
-            var FirstQuesiton = new Question() { Text = "Who is the inventor of C#?", Answer = "Microsoft" };
-            //PresentQuestion(FirstQuesiton);
+            var FirstQuesiton = new Question()
+            {
+                Text = "Who is the inventor of C#?",
+                Answer = "Microsoft",
+                Difficulty = 2
+
+            };
+
 
             var MQuestion = new MupltipleChoiceQuestion()
             {
                 Text = "In which country was the inventor of C# born?",
-                Answer = "America"
+                Answer = "America",
+                Difficulty = 1
+                
             };
 
             var Choice1 = new Choice() { Answer = true, Option = "America" };
@@ -21,7 +30,34 @@ namespace Week3OpdrDeel1
             var Choice3 = new Choice() { Answer = false, Option = "Spain" };
 
             MQuestion.Choices = new List<Choice> { Choice1, Choice2, Choice3 };
-            PresentQuestion(MQuestion);
+
+            var AllQuestions = new List<IQuestion>()
+            {
+                FirstQuesiton,
+                MQuestion,
+            };
+
+            foreach(IQuestion q in AllQuestions)
+            {
+                Console.WriteLine(q.Text);
+            }
+            
+            var SortedList = SortQuestionsOnDifficulty(AllQuestions);
+
+            foreach (IQuestion q in SortedList)
+            {
+                Console.WriteLine(q.Text);
+            }
+            Console.ReadKey();
+
+
+            //PresentQuestion(MQuestion);
+            //PresentQuestion(FirstQuesiton);
+        }
+
+        public static IEnumerable<IQuestion> SortQuestionsOnDifficulty(List<IQuestion> questions)
+        {
+            return questions.OrderBy(q => q.Difficulty);
         }
 
         public static void PresentQuestion(IQuestion q)
@@ -58,17 +94,22 @@ namespace Week3OpdrDeel1
     {
         string Text { get; set; }
         string Answer { get; set; }
+        int Difficulty { get; set; }
         void Print();
+        //string ToString();
     }
 
     public class Question : IQuestion
     {
         public string Text { get; set; }
         public string Answer { get; set; }
+        public int Difficulty { get; set; }
         public void Print()
         {
             Console.WriteLine(Text);
         }
+
+      
     }
 
     public class MupltipleChoiceQuestion : IQuestion
@@ -76,6 +117,7 @@ namespace Week3OpdrDeel1
         public string Text { get; set; }
         public List<Choice> Choices { get; set; }
         public string Answer { get; set; }
+        public int Difficulty { get; set; }
         public void AddChoice(Choice choice)
         {
             Choices.Add(choice);
