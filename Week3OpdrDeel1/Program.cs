@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Week3OpdrDeel1
 {
@@ -7,12 +8,25 @@ namespace Week3OpdrDeel1
         static void Main(string[] args)
         {
             var FirstQuesiton = new Question() { Text = "Who is the inventor of C#?", Answer = "Microsoft" };
-            PresentQuestion(FirstQuesiton);
+            //PresentQuestion(FirstQuesiton);
+
+            var MQuestion = new MupltipleChoiceQuestion()
+            {
+                Text = "In which country was the inventor of C# born?",
+                Answer = "America"
+            };
+
+            var Choice1 = new Choice() { Answer = true, Option = "America" };
+            var Choice2 = new Choice() { Answer = false, Option = "India" };
+            var Choice3 = new Choice() { Answer = false, Option = "Spain" };
+
+            MQuestion.Choices = new List<Choice> { Choice1, Choice2, Choice3 };
+            PresentQuestion(MQuestion);
         }
 
-        public static void PresentQuestion(Question q)
+        public static void PresentQuestion(IQuestion q)
         {
-            Console.WriteLine(q.Text);
+            q.Print();
             Console.WriteLine("Your answer: ");
             string Answer = Console.ReadLine();
             Console.WriteLine("That is " + CheckAnswer(q, Answer));
@@ -21,7 +35,7 @@ namespace Week3OpdrDeel1
 
         }
 
-        public static Boolean CheckAnswer(Question q, string GivenAnswer)
+        public static Boolean CheckAnswer(IQuestion q, string GivenAnswer)
         {
             string CorrectAnswer = q.Answer;
             if(GivenAnswer == CorrectAnswer)
@@ -32,14 +46,57 @@ namespace Week3OpdrDeel1
                 return false;
             }
         }
+
+        public static void Display(IQuestion q)
+        {
+            q.Print();
+            
+        }
     }
 
-    public class Question
+    public interface IQuestion
+    {
+        string Text { get; set; }
+        string Answer { get; set; }
+        void Print();
+    }
+
+    public class Question : IQuestion
     {
         public string Text { get; set; }
         public string Answer { get; set; }
+        public void Print()
+        {
+            Console.WriteLine(Text);
+        }
+    }
 
+    public class MupltipleChoiceQuestion : IQuestion
+    {
+        public string Text { get; set; }
+        public List<Choice> Choices { get; set; }
+        public string Answer { get; set; }
+        public void AddChoice(Choice choice)
+        {
+            Choices.Add(choice);
+        }
 
+        public void Print()
+        {
+            Console.WriteLine(Text);
+            foreach(Choice choice in Choices)
+            {
+                Console.WriteLine(choice.Option);
+            }
+        }
 
     }
+
+    public class Choice
+    {
+        public string Option { get; set; }
+        public Boolean Answer { get; set; }
+    }
+
+    
 }
