@@ -41,13 +41,14 @@ namespace Week3OpdrDeel1
             {
                 Text = "In which country was the inventor of C# born?",
                 Answer = "America",
-                Difficulty = 4
-                
+                Difficulty = 4,
+                Choices = new List<Choice>
+                {
+                    new Choice() { Answer = true, Option = "America" },
+                    new Choice() { Answer = false, Option = "India" },
+                    new Choice() { Answer = false, Option = "Spain" }
+                }
             };
-            var Choice1 = new Choice() { Answer = true, Option = "America" };
-            var Choice2 = new Choice() { Answer = false, Option = "India" };
-            var Choice3 = new Choice() { Answer = false, Option = "Spain" };
-            MQuestion1.Choices = new List<Choice> { Choice1, Choice2, Choice3 };
 
             var MQuestion2 = new MupltipleChoiceQuestion()
             {
@@ -71,7 +72,8 @@ namespace Week3OpdrDeel1
                 MQuestion2
             };
 
-            PresentQuestionOnDifficulty(AllQuestions);
+            PresentQuestion(MQuestion1);
+            //PresentQuestionOnDifficulty(AllQuestions);
 
         }
 
@@ -85,16 +87,16 @@ namespace Week3OpdrDeel1
             var questionsWithChosenDifficulty = questions.Where(q => q.Difficulty.Equals(difficulty));
             int amount = questionsWithChosenDifficulty.Count();
             Random r = new Random();
-            int RandomIndex = r.Next(0, amount);
-            return questionsWithChosenDifficulty.ElementAt(RandomIndex);
+            int randomIndex = r.Next(0, amount);
+            return questionsWithChosenDifficulty.ElementAt(randomIndex);
         }
 
-        public static void PresentQuestion(IQuestion q)
+        public static void PresentQuestion(IQuestion question)
         {
-            q.Print();
+            question.Print();
             Console.WriteLine("Your answer: ");
             string Answer = Console.ReadLine();
-            Console.WriteLine("That is " + CheckAnswer(q, Answer));
+            Console.WriteLine("That is " + CheckAnswer(question, Answer));
             Console.ReadKey();
 
 
@@ -115,13 +117,14 @@ namespace Week3OpdrDeel1
 
         }
 
-        public static Boolean CheckAnswer(IQuestion q, string GivenAnswer)
+        public static Boolean CheckAnswer(IQuestion q, string givenAnswer)
         {
             string CorrectAnswer = q.Answer;
-            if(GivenAnswer == CorrectAnswer)
+            if (givenAnswer == CorrectAnswer)
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
@@ -132,56 +135,6 @@ namespace Week3OpdrDeel1
             q.Print();
             
         }
-    }
-
-    public interface IQuestion
-    {
-        string Text { get; set; }
-        string Answer { get; set; }
-        int Difficulty { get; set; }
-        void Print();
-        //string ToString();
-    }
-
-    public class Question : IQuestion
-    {
-        public string Text { get; set; }
-        public string Answer { get; set; }
-        public int Difficulty { get; set; }
-        public void Print()
-        {
-            Console.WriteLine(Text);
-        }
-
-      
-    }
-
-    public class MupltipleChoiceQuestion : IQuestion
-    {
-        public string Text { get; set; }
-        public List<Choice> Choices { get; set; }
-        public string Answer { get; set; }
-        public int Difficulty { get; set; }
-        public void AddChoice(Choice choice)
-        {
-            Choices.Add(choice);
-        }
-
-        public void Print()
-        {
-            Console.WriteLine(Text);
-            foreach(Choice choice in Choices)
-            {
-                Console.WriteLine(choice.Option);
-            }
-        }
-
-    }
-
-    public class Choice
-    {
-        public string Option { get; set; }
-        public Boolean Answer { get; set; }
     }
 
     
